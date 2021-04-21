@@ -11,13 +11,19 @@ export class CourseListComponent implements OnInit {
 
     _courses: Course[] = [];
 
+
     _filterBy: string;
 
 //a injeção de dependẽncia normalmente é feito no construtor do componente
     constructor(private courseService: CourseService) { }
 
+        //ao iniciar o componente, as propriedades serão setadas
     ngOnInit(): void {
-        this.retrieveAll();
+        //recebendo o valor do service de courses (course.service.ts)
+        this._courses = this.courseService.retrieveAll();
+        //this.retrieveAll();
+        //cursos filtrados
+        this.filteredCourses = this._courses;
     }
 
     retrieveAll(): void {
@@ -40,12 +46,14 @@ export class CourseListComponent implements OnInit {
         })
     }
 
+//criando uma função set para trabalhar com o filtro no html do componente
     set filter(value: string) {
         this._filterBy = value;
 
         this.filteredCourses = this._courses.filter((course: Course) => course.name.toLocaleLowerCase().indexOf(this._filterBy.toLocaleLowerCase()) > -1);
     }
 
+//criando uma função get para retornar o filtro no html do componente
     get filter() {
         return this._filterBy;
     }
